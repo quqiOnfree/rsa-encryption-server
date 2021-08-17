@@ -8,19 +8,19 @@ def rsa_key(num: int):
     return key.publickey().export_key(), key.export_key()
 
 
-def dersa(encrypted_data: bytes, private_key: bytes,size:int):
+def dersa(encrypted_data: bytes, private_key: bytes, size: int):
     lenth = int(size/1024*128)
     priobj = PKCS1_v1_5.new(RSA.import_key(private_key))
     res = b""
-    for i in range(0,len(encrypted_data),lenth):
-        res+=priobj.decrypt(encrypted_data[i:i+lenth],"xyz")
+    for i in range(0, len(encrypted_data), lenth):
+        res += priobj.decrypt(encrypted_data[i:i+lenth], "xyz")
     return res
 
 
-def enrsa(data: str, public_key: bytes,size:int):
+def enrsa(data: str, public_key: bytes, size: int):
     lenth = int(size/1024*100)
     pubobj = PKCS1_v1_5.new(RSA.import_key(public_key))
     res = b""
-    for i in range(0,len(data),lenth):
-        res+=pubobj.encrypt(data[i:i+lenth])
+    for i in range(0, len(data), lenth):
+        res += pubobj.encrypt(data[i:i+lenth])
     return res
