@@ -64,11 +64,13 @@ def run(addr, conn):
                     print(addr, "使用了解密指令")
                     conn.sendall(data_.decode("utf-8").encode("gb2312"))
                     print("服务端返回", addr, "值为", data_.decode("utf-8"))
-                    del f, prikey, data_
+                    del data, f, prikey, data_
                     break
 
                 except:
                     print(error)
+                    conn.sendall("你发送的命令/数据不符合规范，请更改")
+                    del error, data
             time.sleep(0.001)
 
 
