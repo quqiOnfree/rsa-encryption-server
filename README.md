@@ -29,7 +29,7 @@
     修改服务端的密钥：[data](./data)文件夹里面的[pub.pem](./data/pub.pem)和[pri.pem](./data/pri.pem)
 2.  如何传输加密指令？向服务端发送：
     {"comm":"enrsa","data":string类型的数据,"key":pub,"lenth":密钥大小（一般是2048）}
-    这个在[a文件](./data/a)里面有，返回值是加密后的数据，
+    ，返回值是加密后的数据，
     类型：python中是bytes,c/c++ 貌似是unsigned char
 3.  如何解密？直接向服务端发送对方加密过的数据
     返回值是解密后的数据
