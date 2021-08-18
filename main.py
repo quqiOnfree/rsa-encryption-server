@@ -12,37 +12,37 @@ server_lenth = 2048
 
 def get_month():
     data = time.ctime(time.time()).split(" ")
-    month = 1
+    month = "01"
     if data[1] == "Jan":
-        month = 1
+        month = "01"
     elif data[1] == "Feb":
-        month = 2
+        month = "02"
     elif data[1] == "Mar":
-        month = 3
+        month = "03"
     elif data[1] == "Apr":
-        month = 4
+        month = "04"
     elif data[1] == "May":
-        month = 5
+        month = "05"
     elif data[1] == "Jun":
-        month = 6
+        month = "06"
     elif data[1] == "Jul":
-        month = 7
+        month = "07"
     elif data[1] == "Aug":
-        month = 8
+        month = "08"
     elif data[1] == "Sep":
-        month = 9
+        month = "09"
     elif data[1] == "Oct":
-        month = 10
+        month = "10"
     elif data[1] == "Nov":
-        month = 11
+        month = "11"
     elif data[1] == "Dec":
-        month = 12
+        month = "12"
     return month
 
 
 def get_date():
     data = time.ctime(time.time()).split(" ")
-    return "["+data[-1]+":"+str(get_month())+":"+data[-3]+":"+data[-2]+"]"
+    return "["+data[-1]+"/"+str(get_month())+"/"+data[-3]+" "+data[-2]+"]"
 
 
 def msg(strs):
@@ -53,15 +53,30 @@ def msg(strs):
         f.write(strs+"\n")
 
 
-def change_str(data_: str):
+def change_str(data_):
     try:
-        re = data_[:50]+"..."
+        try:
+            re: bytes = data_[:50].encode()+"...".encode()
+        except:
+            re: bytes = data_.encode()
     except:
-        re = data_
+        try:
+            re: bytes = data_[:50]+"...".encode()
+        except:
+            re: bytes = data_
     return re
 
 
-def run(addr, conn):
+def write_(lenth):
+    pub, pri = rsa_key(lenth)
+    with open("./data/pub.pem", "wb") as f1:
+        f1.write(pub)
+    with open("./data/pri.pem", "wb") as f2:
+        f2.write(pri)
+    del pub, pri, lenth, f1, f2
+
+
+def run(addr: tuple, conn: socket.socket):
     global server_lenth
     msg(get_date()+addr[0]+":"+str(addr[1])+"连接至服务器")
     while True:
@@ -77,11 +92,15 @@ def run(addr, conn):
                 data3 = json5.loads(data2)
 
                 if data3["comm"] == "enrsa":
+                    msg(get_date()+addr[0]+":" +
+                        str(addr[1])+"使用了enrsa指令")
                     data_ = data3["data"]
                     pub = data3["key"]
                     lenth = data3["lenth"]
-                    conn.sendall(
-                        enrsa(data_.encode("utf-8"), pub.encode(), lenth))
+                    data_2 = enrsa(data_.encode("utf-8"), pub.encode(), lenth)
+                    conn.sendall(data_2)
+                    msg(get_date()+"服务端返回" +
+                        addr[0]+":"+str(addr[1])+"值为："+str(change_str(data_2)))
                     del data, data2, data3, data_, pub, lenth
                     break
 
@@ -90,14 +109,11 @@ def run(addr, conn):
                         str(addr[1])+"使用了rsa_key_server指令")
                     lenth = data3["lenth"]
                     server_lenth = lenth
-                    pub, pri = rsa_key(lenth)
-                    with open("./data/pub.pem", "wb") as f1:
-                        f1.write(pub)
-                    with open("./data/pri.pem", "wb") as f2:
-                        f2.write(pri)
+                    multiprocessing.Process(
+                        target=write_, args=(lenth,)).start()
                     conn.sendall("ok".encode("gb2312"))
                     msg(get_date()+"服务端返回"+addr[0]+":"+str(addr[1])+"值为：ok")
-                    del data, data2, data3, lenth, pub, pri, f1, f2
+                    del data, data2, data3, lenth
                     break
 
                 elif data3["comm"] == "rsa_key_back":
@@ -109,7 +125,7 @@ def run(addr, conn):
                     retu2 = json.dumps(retu)
                     conn.sendall(retu2.encode("gb2312"))
                     msg(get_date()+"服务端返回"+addr[0] +
-                        ":"+str(addr[1])+"值为："+change_str(retu2))
+                        ":"+str(addr[1])+"值为："+change_str(retu2).decode())
                     del data, data2, data3, lenth, pub, pri, retu, retu2
                     break
                 else:
@@ -126,7 +142,7 @@ def run(addr, conn):
                     conn.sendall(data_.decode("utf-8").encode("gb2312"))
 
                     msg(get_date()+"服务端返回" +
-                        addr[0]+":"+str(addr[1])+"值为："+change_str(data_.decode("utf-8")))
+                        addr[0]+":"+str(addr[1])+"值为："+change_str(data_.decode("utf-8")).decode())
                     del data, f, prikey, data_, error
                     break
 
