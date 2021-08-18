@@ -4,6 +4,7 @@ import time
 import json5
 import json
 import gc
+import os
 from rsa_new_copy import *
 
 server_lenth = 2048
@@ -139,6 +140,8 @@ def run(addr, conn):
 
 
 if __name__ == "__main__":
+    if not "logs" in os.listdir():
+        os.mkdir("logs")
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(("127.0.0.1", 5000))
     s.listen(102400)
