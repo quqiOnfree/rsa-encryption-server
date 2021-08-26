@@ -13,7 +13,7 @@
 
 #### 安装教程
 
-1.  安装[requirements.txt](requirements.txt),cmd指令：pip install -r requirements.txt
+1.  安装[requirements.txt](requirements.txt),cmd指令：`pip install -r requirements.txt`
 2.  运行[main.py](main.py)就能用了
 
 #### 注意事项
@@ -29,16 +29,16 @@
     编码方式：gb2312
     修改服务端的密钥：[data](./data)文件夹里面的[pub.pem](./data/pub.pem)和[pri.pem](./data/pri.pem)
 2.  如何传输加密指令？向服务端发送：
-    {"comm":"enrsa","data":string类型的数据,"key":pub,"lenth":密钥大小（一般是2048）}
+    `{"comm":"enrsa","data":string类型的数据,"key":pub,"lenth":密钥大小（一般是2048）}`
     ，返回值是加密后的数据，
     类型：python中是bytes,c/c++ 貌似是unsigned char
 3.  如何解密？直接向服务端发送对方加密过的数据
     返回值是解密后的数据
 4.  更新服务端本地的密钥：向服务端发送json样式：
-    {"comm":"rsa_key_server","lenth":2048}
+    `{"comm":"rsa_key_server","lenth":2048}`
     返回值是："ok"
 5.  如何获取随机的rsa的公钥和密钥？向服务端发送：
-    {"comm":"rsa_key_back","lenth":2048}
+    `{"comm":"rsa_key_back","lenth":2048}`
     返回值是：{"pub": 公钥, "pri": 密钥}，
     返回值中python中类型是str，c/c++中是string/const char*
 
