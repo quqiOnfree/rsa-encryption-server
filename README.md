@@ -1,4 +1,8 @@
 # rsa加密服务端
+![license](https://img.shields.io/github/license/quqiOnfree/rsa-encryption-serve)
+![CIStatus](https://img.shields.io/github/workflow/status/quqiOnfree/rsa-encryption-serve/Gradle%20CI)
+![downloads](https://img.shields.io/github/downloads/quqiOnfree/rsa-encryption-server/total)
+![issues](https://img.shields.io/github/issues/quqiOnfree/rsa-encryption-serve)
 ![code size](https://img.shields.io/github/languages/code-size/quqiOnfree/rsa-encryption-server)
 
 #### 介绍
