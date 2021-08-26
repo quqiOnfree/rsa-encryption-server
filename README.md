@@ -36,10 +36,10 @@
     返回值是解密后的数据
 4.  更新服务端本地的密钥：向服务端发送json样式：
     `{"comm":"rsa_key_server","lenth":2048}`
-    返回值是："ok"
+    返回值是：`"ok"`
 5.  如何获取随机的rsa的公钥和密钥？向服务端发送：
     `{"comm":"rsa_key_back","lenth":2048}`
-    返回值是：{"pub": 公钥, "pri": 密钥}，
+    返回值是：`{"pub": 公钥, "pri": 密钥}`，
     返回值中python中类型是str，c/c++中是string/const char*
 
 #### 参与贡献
