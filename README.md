@@ -1,4 +1,5 @@
 # rsa加密服务端
+![code size](https://img.shields.io/github/languages/code-size/quqiOnfree/rsa-encryption-server)
 
 #### 介绍
 这个是专门解决多语言不互通的问题而建立的服务端（功能尚不完全，请等后续更新）
