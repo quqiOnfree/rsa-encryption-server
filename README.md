@@ -1,5 +1,4 @@
 # rsa加密服务端
-![code size](https://img.shields.io/github/languages/code-size/quqiOnfree/rsa-encryption-server)
 
 #### 介绍
 这个是专门解决多语言不互通的问题而建立的服务端（功能尚不完全，请等后续更新）
@@ -8,13 +7,13 @@
 #### 软件架构
 利用pycryptodome库进行加密、解密，
 利用socket库进行网络传输，
-利用multiprocessing进行多线程处理任务
+利用threading中的Thread进行多线程处理任务
 
 
 #### 安装教程
 
-1.  安装[requirements.txt](requirements.txt),cmd指令：`pip install -r requirements.txt`
-2.  运行[main.py](main.py)就能用了
+1.  双击[install.bat](install.bat)
+2.  运行[start.bat](start.bat)就能用了
 
 #### 注意事项
 

@@ -1,11 +1,11 @@
 import socket
-import multiprocessing
 import time
 import json5
 import json
 import gc
 import os
 from rsa_new_copy import *
+from threading import Thread
 
 server_lenth = 2048
 
@@ -56,12 +56,12 @@ def msg(strs):
 def change_str(data_):
     try:
         try:
-            re: bytes = data_[:50].encode()+"...".encode()
+            re: bytes = data_[:50].encode("utf-8")+"...".encode("utf-8")
         except:
-            re: bytes = data_.encode()
+            re: bytes = data_.encode("utf-8")
     except:
         try:
-            re: bytes = data_[:50]+"...".encode()
+            re: bytes = data_[:50]+"...".encode("utf-8")
         except:
             re: bytes = data_
     return re
@@ -81,7 +81,13 @@ def run(addr: tuple, conn: socket.socket):
     msg(get_date()+addr[0]+":"+str(addr[1])+"连接至服务器")
     while True:
         while True:
-            data = conn.recv(102400)
+            try:
+                data = conn.recv(102400)
+            except:
+                msg(get_date()+addr[0]+":"+str(addr[1])+"断开连接")
+                conn.close()
+                del conn, addr
+                return
             if len(data) <= 0:
                 msg(get_date()+addr[0]+":"+str(addr[1])+"断开连接")
                 conn.close()
@@ -109,7 +115,7 @@ def run(addr: tuple, conn: socket.socket):
                         str(addr[1])+"使用了rsa_key_server指令")
                     lenth = data3["lenth"]
                     server_lenth = lenth
-                    multiprocessing.Process(
+                    Thread(
                         target=write_, args=(lenth,)).start()
                     conn.sendall("ok".encode("gb2312"))
                     msg(get_date()+"服务端返回"+addr[0]+":"+str(addr[1])+"值为：ok")
@@ -163,4 +169,4 @@ if __name__ == "__main__":
     s.listen(102400)
     while True:
         conn, addr = s.accept()
-        multiprocessing.Process(target=run, args=(addr, conn)).start()
+        Thread(target=run, args=(addr, conn)).start()
